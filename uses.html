@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uses of Steganography</title>
+    <style media="screen">
+        html, body {
+            color: #333;
+            font-family: "Poppins", sans-serif;
+            width: 100%;
+            height: 100%;
+            background-color: #f0f4f8;
+            overflow-x: hidden;
+            html {
+        scroll-behavior: smooth;
+}
+        }
+
+        ::selection {
+            background-color: #82c0ff;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            margin: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #007acc;
+            font-family: 'Poiret One', cursive;
+        }
+
+        nav .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .nav-links li {
+            margin: 0 1rem;
+        }
+
+        nav .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 400;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav .nav-links a::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #007acc;
+            transition: width 0.3s;
+        }
+
+        nav .nav-links a:hover {
+            color: #007acc;
+        }
+
+        nav .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            nav .nav-links {
+                flex-direction: column;
+                align-items: flex-start;
+                background: rgba(255, 255, 255, 0.8);
+                position: absolute;
+                top: 90px;
+                left: 0;
+                right: 0;
+                padding: 10px 0;
+                display: none;
+                border-radius: 12px;
+            }
+
+            nav .nav-links li {
+                margin: 0.5rem 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            nav .nav-links.show {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+            }
+
+            .menu-toggle .bar {
+                width: 25px;
+                height: 3px;
+                background-color: #333;
+                margin: 5px 0;
+                transition: 0.3s;
+            }
+
+            .menu-toggle.active .bar1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .menu-toggle.active .bar2 {
+                opacity: 0;
+            }
+
+            .menu-toggle.active .bar3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+        }
+
+        .content {
+            padding: 2rem;
+            margin: 1rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h1 {
+            color: #007acc;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .content ul {
+            list-style: disc;
+            padding-left: 2rem;
+        }
+
+        .content ul li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Data Encryption and Steganography</div>
+        <div class="menu-toggle" id="mobile-menu">
+            <div class="bar bar1"></div>
+            <div class="bar bar2"></div>
+            <div class="bar bar3"></div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="uses.html">Uses</a></li>
+            <li><a href="#usermanual">User Manual</a></li>
+            <li><a href="index.php?action=logout">Logout</a></li>
+        </ul>
+        
+    </nav>
+        <div class="content">
+        <div class="content">
+        <h1>Encryption and Decryption in Steganography</h1>
+        </div>
+        <div class="content">
+        <H1>Encryption</H1>
+        <ul>
+<li>Encryption is the process of converting plain text or data into a coded format using a specific algorithm and a key. This coded format, known as ciphertext, is unreadable to anyone who does not have the key to decrypt it. Encryption ensures that even if data is intercepted, it cannot be understood without the decryption key.</li>
+        <li>In the context of steganography, encryption adds an additional layer of security. Before hiding data within an image, audio, or other media file, the data is first encrypted. This means that even if the hidden data is discovered, it remains inaccessible without the correct decryption key.</li>
+        </ul>
+        <br>
+        <h3>Key Aspects of Encryption:</h3>
+        <ul>
+            <li><b>Confidentiality:</b> Ensures that only authorized parties can access the data.</li>
+            <li><b>Algorithms:</b> Common encryption algorithms include AES (Advanced Encryption Standard), RSA (Rivest-Shamir-Adleman), and DES (Data Encryption Standard).</li>
+            <li><b>Keys:</b> Encryption uses a key, which is a string of characters used by the algorithm to transform the data.</li>
+        </ul>
+        </div>
+        <div class="content">
+        <H1>Decryption</H1>
+<ul>  
+        <li>Decryption is the process of converting ciphertext back into its original plain text format using the corresponding decryption key. This allows the authorized recipient to access and understand the original data.</li>
+        <li>In steganography, decryption is used after extracting the hidden data from the media file. The extracted data, which is in encrypted form, is decrypted to reveal the original message or information.</li>
+</ul>
+<br>
+        <h3>Key Aspects of Decryption:</h3>
+        <ul>
+            <li><b>Accessibility:</b> Decryption ensures that the data can be accessed and understood by authorized parties.</li>
+            <li><b>Key Matching:</b> The decryption process requires the same key that was used for encryption.</li>
+            <li><b>Reversibility:</b> Decryption is the reverse process of encryption, restoring the original data.</li>
+        </ul>
+        </div>
+    </div>        
+         <div class="content">       
+        <div class="content">        
+        <H1>Steganography</H1>
+        <ul>
+        <li>Steganography is the practice of concealing data within another file or message to prevent detection. Unlike encryption, which scrambles the data, steganography hides the data in plain sight.</li>
+       </ul>
+       <br>
+        <h3>Types of Steganography:</h3>
+        <ul>
+            <li><b>Image Steganography:</b> Hiding data within the pixels of an image.</li>
+            <li><b>Audio Steganography:</b> Concealing data within audio files.</li>
+            <li><b>Video Steganography:</b> Embedding data within video files.</li>
+            <li><b>Text Steganography:</b> Using text formats to hide data within a document.</li>
+        </ul>
+        </div>
+        <div class="content">        
+        <H1>Encryption and Decryption in Steganography</H1>
+        <ul>
+        <li>By combining encryption with steganography, a two-layered security approach is achieved:</li>
+        </ul>
+        <ol>
+            <li><b>Encrypting the Data:</b> The data is first encrypted to make it unreadable without the key.</li>
+            <li><b>Hiding the Encrypted Data:</b> The encrypted data is then embedded within a cover file (image, audio, etc.) using steganography techniques.</li>
+        </ol>
+        <p>This combination ensures that even if the steganographic data is detected, it cannot be interpreted without decrypting it first, providing a higher level of security.</p>
+                </div>
+        <div class="content">
+        <H1>Advantages:</H1>
+        <ul>
+            <li><b>Enhanced Security:</b> Dual protection through encryption and steganography.</li>
+            <li><b>Confidential Communication:</b> Ensures privacy and confidentiality in sensitive communications.</li>
+            <li><b>Integrity and Authenticity:</b> Protects the integrity and authenticity of the hidden data.</li>
+        </ul>
+    </div>
+        </div>    
+        <div class="content">    
+     <div class="content">
+        <h1>Uses of Steganography</h1>
+        </div>
+        <div class="content">        
+        <H2>Applications</H2>
+        <ul>
+            <li><b>Military and Intelligence: </b>Secure communication of classified information.</li>
+            <li><b>Digital Rights Management (DRM): </b>Protecting intellectual property.</li>
+            <li><b>Personal Privacy: </b>Securing private and sensitive information from unauthorized access.</li>
+            <li><b>Authentication: </b>Verifying the authenticity of digital documents.</li>
+        </ul>
+        <p>Some more uses include:</p>
+        <ul>
+            <li>Secure communication</li>
+            <li>Digital watermarking</li>
+            <li>Confidential document storage</li>
+            <li>Authentication and tamper detection</li>
+            <li>Protecting intellectual property</li>
+        </ul>
+    </div>
+        </div>    
+        <div class="content">    
+        <div class="content">
+            <h1>User Manual</h1>
+        </div>
+        <div class="content" id="usermanual">            
+        <h2>Introduction</h2>
+        <p>This application allows you to securely encrypt and decrypt data using steganography. Follow the steps below to use the application.</p>
+
+        <h2>Encrypting Data</h2>
+        <ol>
+            <li>Navigate to the Encryption page.</li>
+            <li>Enter the data you want to encrypt in the provided text area.</li>
+            <li>Provide an encryption password.</li>
+            <li>Select the image in which you want to embed the encrypted data.</li>
+            <li>Click on "Encrypt and Embed" button to generate the encrypted image.</li>
+        </ol>
+        
+        <h2>Decrypting Data</h2>
+        <ol>
+            <li>Navigate to the Decryption page.</li>
+            <li>Provide the decryption password.</li>
+            <li>Select the encrypted image.</li>
+            <li>Click on "Decrypt" button to reveal the hidden data.</li>
+        </ol>
+    </div>
+        </div>    
+    <script>
+        document.getElementById('mobile-menu').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('show');
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
+
+

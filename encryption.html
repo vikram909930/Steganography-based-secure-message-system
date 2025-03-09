@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Encryption</title>
+    <style>
+                body {
+            font-family: 'Poppins', 'Roboto', 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #040D12, #183D3D, #5C8374, #93B1A6);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            overflow: auto;
+            animation: gradient 25s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradient {
+            0% {
+                background: linear-gradient(135deg, #040D12, #183D3D, #5C8374, #93B1A6);
+            }
+
+            20% {
+                background: linear-gradient(135deg, #252525, #FF0000, #AF0404, #414141);
+            }
+
+            40% {
+                background: linear-gradient(135deg, #0A2647, #144272, #205295, #2C74B3);
+            }
+
+            60% {
+                background: linear-gradient(135deg, #FFFAE6, #FF9F66, #FF5F00, #002379);
+            }
+
+            80% {
+                background: linear-gradient(135deg, #FFE6E6, #E1AFD1, #AD88C6, #7469B6);
+            }
+
+            100% {
+                background: linear-gradient(135deg, #040D12, #183D3D, #5C8374, #93B1A6);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        h1,
+        h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        form label {
+            margin: 10px 0 5px;
+            color: #fff;
+        }
+
+        form input[type="text"],
+        form input[type="password"],
+        form input[type="file"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        form button {
+            padding: 10px;
+            background-color: #5cb85c;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #4cae4c;
+            color: #fff;
+        }
+
+        #result,
+        #decryptResult {
+            margin-top: 20px;
+        }
+
+        #result img,
+        #decryptResult textarea {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .out {
+            flex: 1;
+            text-align: center;
+        }
+
+        .img {
+            flex: 1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #outputImage {
+            position: relative;
+            align-items: center;
+            margin: 20px 0;
+            width: 250px;
+        }
+
+        .im {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .back-button::before {
+            content: '⬅️';
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <button class="back-button" onclick="window.history.back();"></button>
+        <div class="im">
+            <h1>Encrypt Image</h1>
+            <form id="encrypt-form" enctype="multipart/form-data" method="post" action="encryptHis.php">
+                <label for="inputData">Enter Data:</label>
+                <textarea id="inputData" name="inputData" required></textarea>
+                <label for="password">Encryption Password:</label>
+                <input type="password" id="password" name="password" required>
+                <label for="imageInput">Choose Image:</label>
+                <input type="file" id="imageInput" accept="image/*" required>
+                <label for="outputFileName">Output File Name:</label>
+                <input type="text" id="outputFileName" name="outputFileName" placeholder="encrypted_image" required>
+                <input type="hidden" id="imageData" name="imageData">
+                <button type="button" id="encryptButton">Encrypt and Embed</button>
+                <button type="submit" id="submitForm" style="display: none;">Submit Form</button>
+            </form>
+            <canvas id="canvas" style="display:none;"></canvas>
+        </div>
+        <div class="out">
+            <h2>Output Image</h2>
+            <a id="downloadLink" style="display: none;">
+                <img id="outputImage" alt="Encrypted image will appear here">
+            </a>
+            <button id="downloadButton" style="display: none;">Download Image</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('encryptButton').addEventListener('click', async function () {
+        try {
+            const inputData = document.getElementById('inputData').value;
+            const password = document.getElementById('password').value;
+            const imageInput = document.getElementById('imageInput').files[0];
+            const outputFileName = document.getElementById('outputFileName').value || 'encrypted_image';
+
+            if (!inputData || !password || !imageInput) {
+                alert('Please fill in all fields and select an image.');
+                return;
+            }
+
+            const encryptedData = CryptoJS.AES.encrypt(inputData, password).toString();
+            const reader = new FileReader();
+
+            reader.onload = async function (event) {
+                const img = new Image();
+                img.onload = async function () {
+                    const canvas = document.getElementById('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imgData.data;
+
+                    // Embed encrypted data into the image
+                    for (let i = 0; i < encryptedData.length; i++) {
+                        if (i * 4 < data.length) {
+                            data[i * 4] = encryptedData.charCodeAt(i) % 256;
+                        }
+                    }
+
+                    ctx.putImageData(imgData, 0, 0);
+                    const outputImage = document.getElementById('outputImage');
+                    outputImage.src = canvas.toDataURL();
+
+                    // Prepare the data for fetch API
+                    const imageData = canvas.toDataURL();
+                    document.getElementById('imageData').value = imageData;
+
+                    // Display the download link
+                    const downloadLink = document.getElementById('downloadLink');
+                    downloadLink.href = canvas.toDataURL();
+                    downloadLink.download = `${outputFileName}.png`;
+                    downloadLink.style.display = 'block';
+
+                    // Display the download button
+                    const downloadButton = document.getElementById('downloadButton');
+                    downloadButton.style.display = 'block';
+
+                    // Trigger the download and form submission when download button is clicked
+                    downloadButton.onclick = async function () {
+                        downloadLink.click();
+
+                        // Prepare the form data for Fetch API
+                        const formData = new FormData();
+                        formData.append('inputData', inputData);
+                        formData.append('password', password);
+                        formData.append('imageData', imageData);
+                        formData.append('outputFileName', outputFileName);
+
+                        try {
+                            const response = await fetch('encryptHis.php', {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            if (response.ok) {
+                                alert('Image successfully encrypted and data submitted!');
+                            } else {
+                                alert('Failed to submit the form.');
+                            }
+                        } catch (error) {
+                            console.error('Error during form submission:', error);
+                            alert('An error occurred during submission. Please try again.');
+                        }
+                    };
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(imageInput);
+        } catch (error) {
+            console.error('An error occurred during the encryption process:', error);
+            alert('Encryption failed. Please try again.');
+        }
+    });
+});
+    </script>
+</body>
+
+</html>

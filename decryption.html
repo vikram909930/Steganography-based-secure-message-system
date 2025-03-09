@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption</title>
+    <style>
+        body {
+            font-family: 'Poppins', 'Roboto', 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #040D12, #183D3D, #5C8374, #93B1A6);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            overflow: auto;
+            animation: gradient 25s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradient {
+            0% {
+                background: linear-gradient(135deg, #040D12, #183D3D, #5C8374, #93B1A6);
+            }
+
+            20% {
+                background: linear-gradient(135deg, #252525, #FF0000, #AF0404, #414141);
+            }
+
+            40% {
+                background: linear-gradient(135deg, #0A2647, #144272, #205295, #2C74B3);
+            }
+
+            60% {
+                background: linear-gradient(135deg, #FFFAE6, #FF9F66, #FF5F00, #002379);
+            }
+
+            80% {
+                background: linear-gradient(135deg, #FFE6E6, #E1AFD1, #AD88C6, #7469B6);
+            }
+
+            100% {
+                background: linear-gradient(135deg, #040D12, #183D3D, #5C8374, #93B1A6);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        form label {
+            margin: 10px 0 5px;
+            color: #fff;
+        }
+
+        form input[type="password"],
+        form input[type="file"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        form button {
+            padding: 10px;
+            background-color: #5cb85c;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #4cae4c;
+            color: #fff;
+        }
+
+        #result,
+        #decryptResult {
+            margin-top: 20px;
+        }
+
+        #result img,
+        #decryptResult textarea {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: left;
+            color: #fff;
+        }
+
+
+        .im {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .back-button::before {
+            content: '⬅️';
+            font-size: 20px;
+            color: #333;
+        }
+        .out {
+            flex: 1;
+            text-align: center;
+            
+        }
+    </style>
+<body>
+    <div class="container">
+        <button class="back-button" onclick="window.history.back();"></button>
+        <div class="im">
+            <h1>Decrypt Image</h1>
+            <form id="decrypt-form" enctype="multipart/form-data" method="POST" action="decryptHis.php">
+                <label for="decryptImageInput">Choose Encrypted Image:</label>
+                <input type="file" name="img" id="decryptImageInput" accept="image/*" required>
+                <label for="decryptPassword">Decryption Password:</label>
+                <input type="password" id="decryptPassword" name="decryptPassword" required>
+                <button type="button" id="decryptButton">Decrypt</button>
+            </form>
+        </div>
+        <div class="out">
+            <h2>Decrypted Data</h2>
+            <textarea id="decryptedData" rows="10" readonly></textarea>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('decryptButton').addEventListener('click', function() {
+                const password = document.getElementById('decryptPassword').value;
+                const imageInput = document.getElementById('decryptImageInput').files[0];
+    
+                if (!password || !imageInput) {
+                    alert('Please fill in all fields and select an image.');
+                    return;
+                }
+    
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+    
+                        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const data = imgData.data;
+    
+                        // Extract encrypted data
+                        let encryptedData = '';
+                        for (let i = 0; i < data.length; i += 4) {
+                            encryptedData += String.fromCharCode(data[i]);
+                        }
+    
+                        try {
+                            encryptedData = encryptedData.trim();
+                            const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, password);
+                            const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    
+                            document.getElementById('decryptedData').value = decryptedData;
+    
+                            // Prepare form data for submission
+                            const formData = new FormData();
+                            formData.append('img', imageInput.name); // Use the image data if needed
+                            formData.append('decryptedData', decryptedData);
+    
+                            // Send data using Fetch API
+                            fetch('decryptHis.php', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.text()) // Changed to text() to match PHP output
+                            .then(data => {
+                                
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+    
+                        } catch (error) {
+                            alert('Decryption failed. Please check your password and image.');
+                        }
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(imageInput);
+            });
+        });
+    </script>
+    
+</body>
+
+</html>
